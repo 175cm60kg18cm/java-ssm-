@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace要求写dao接口的全限定名称-->
+<mapper namespace="com.mz.dao.StudentDao">
+    <select id="findStudentByName" resultType="com.mz.domain.Student">
+        select * from student where name=#{name}
+    </select>
+    <insert id="insertStudent" parameterType="com.mz.domain.Student">
+        insert into student(username,sn,password,photo,sex,clazzId,remark) values (#{username},#{sn},#{password},#{photo},#{sex},#{clazzId},#{remark})
+    </insert>
+    <select id="findStudentList" parameterType="Map" resultType="com.mz.domain.Student">
+        select * from student where 1=1
+         <if test="username!=null">
+             and username like #{username}
+         </if>
+         <if test="clazzId!=null">
+             and clazzId=#{clazzId}
+         </if>
+         limit #{offset},#{pageSize}
+    </select>
+    <select id="getTotal" resultType="int" parameterType="Map">
+        select count(id) from student where name like #{name}
+    </select>
+    <update id="edit" parameterType="com.mz.domain.Student" >
+        update student set username=#{username} , remark=#{remark} , password=#{password}, sex=#{sex} ,clazzId=#{clazzId}where id=#{id}
+    </update>
+    <delete id="delete" parameterType="long">
+        delete from student where id=#{id}
+    </delete>
+    <select id="findAll" resultType="com.mz.domain.Student">
+        select * from student
+    </select>
+</mapper>

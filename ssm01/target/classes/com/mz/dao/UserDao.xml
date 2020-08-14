@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace要求写dao接口的全限定名称-->
+<mapper namespace="com.mz.dao.UserDao">
+    <select id="findUserByName" resultType="com.mz.domain.User">
+        select * from user where username=#{username}
+    </select>
+    <insert id="insertUser" parameterType="com.mz.domain.User">
+        insert into user(username,password) values (#{username},#{password})
+    </insert>
+    <select id="findUserList" parameterType="Map" resultType="com.mz.domain.User">
+        select * from user where username like #{username} limit #{offset},#{pageSize}
+    </select>
+    <select id="getTotal" resultType="int" parameterType="Map">
+        select count(id) from user where username like #{username}
+    </select>
+    <update id="edit" parameterType="com.mz.domain.User" >
+        update user set username=#{username} , password=#{password} where id=#{id}
+    </update>
+    <delete id="delete" parameterType="long">
+        delete from user where id=#{id}
+    </delete>
+</mapper>

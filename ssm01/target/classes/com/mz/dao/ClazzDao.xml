@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace要求写dao接口的全限定名称-->
+<mapper namespace="com.mz.dao.ClazzDao">
+    <select id="findClazzByName" resultType="com.mz.domain.Clazz">
+        select * from clazz where name=#{name}
+    </select>
+    <insert id="insertClazz" parameterType="com.mz.domain.Clazz">
+        insert into clazz(name,gradeId,remark) values (#{name},#{gradeId},#{remark})
+    </insert>
+    <select id="findClazzList" parameterType="Map" resultType="com.mz.domain.Clazz">
+        select * from clazz where 1=1
+        <if test="name != null">
+           and name like #{name}
+        </if>
+        <if test="gradeId != null">
+           and gradeId = #{gradeId}
+        </if>
+        limit #{offset} ,#{pageSize}
+    </select>
+    <select id="getTotal" resultType="int" parameterType="Map">
+        select count(id) from clazz where 1=1
+        <if test="name != null">
+            and name like #{name}
+        </if>
+        <if test="gradeId != null">
+            and gradeId = #{gradeId}
+        </if>
+    </select>
+    <update id="edit" parameterType="com.mz.domain.Clazz" >
+        update clazz set name=#{name} , remark=#{remark}, gradeId=#{gradeId} where id=#{id}
+    </update>
+    <delete id="delete" parameterType="long">
+        delete from clazz where id=#{id}
+    </delete>
+    <select id="findAll" resultType="com.mz.domain.Clazz">
+        select * from clazz
+    </select>
+</mapper>

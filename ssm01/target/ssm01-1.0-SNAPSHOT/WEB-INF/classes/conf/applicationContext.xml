@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+    <context:property-placeholder location="classpath:/conf/jdbc.properties"></context:property-placeholder>
+    <bean id="datasource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sessionFactoryBean">
+        <property name="dataSource" ref="datasource"></property>
+        <property name="configLocation" value="classpath:conf/mybatis.xml"></property>
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" id="mapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sessionFactoryBean"></property>
+        <property name="basePackage" value="com.mz.dao"></property>
+    </bean>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10485760"></property>
+        <property name="defaultEncoding" value="UTF-8"></property>
+    </bean>
+    <context:component-scan base-package="com.mz.service"></context:component-scan>
+<!--    <context:component-scan base-package="com.mz.exceptionhandler"></context:component-scan>-->
+</beans>

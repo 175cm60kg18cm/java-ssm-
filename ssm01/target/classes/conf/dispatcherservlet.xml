@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:task="http://www.alibaba.com/schema/stat"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.alibaba.com/schema/stat http://www.alibaba.com/schema/stat.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <context:component-scan base-package="com.mz.controller"></context:component-scan>
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+<!--    <context:component-scan base-package="com.mz.exceptionhandler"></context:component-scan>-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+    <!-- 响应Ajax请求，返回json
+    解决静态资源问题
+ -->
+    <task:annotation-driven/>
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/system/login"/>
+            <mvc:exclude-mapping path="/system/get_spacha"/>
+            <mvc:exclude-mapping path="/h-ui/**"/>
+            <mvc:exclude-mapping path="/easyui/**"/>
+            <mvc:exclude-mapping path="/home-resources/**"/>
+            <mvc:exclude-mapping path="/home/**"/>
+            <!-- 此处要修改 -->
+            <bean class="com.mz.intercetor.MyIntercetor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+<!--    <mvc:resources mapping="/**" location="/easyui/"/>-->
+<!--    <mvc:resources mapping="/jquery.easyui.min.js" location="/easyui/"></mvc:resources>-->
+<!--    <mvc:resources mapping="/**" location="/h-ui/"></mvc:resources>-->
+    <mvc:default-servlet-handler></mvc:default-servlet-handler>
+</beans>
